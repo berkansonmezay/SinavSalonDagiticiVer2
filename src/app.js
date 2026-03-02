@@ -1727,34 +1727,30 @@
   }
 
   function drawAlignmentMarks(doc, pageHeight) {
-    doc.setFillColor(0, 0, 0); // Black
+    // Kaldırıldı - artık hizalama çizgileri çizilmiyor
+  }
 
-    var startY = 10;
-    var endY = pageHeight - 10;
-
-    // Sadece yatay çizgiler (Horizontal timing marks)
-    var markX = 4;
-    var markWidth = 5; // Biraz daha geniş yaptım ki net görünsün
-    var markHeight = 1.5;
-    var pitch = 5;
-
-    for (var y = startY; y <= endY - markHeight; y += pitch) {
-      doc.rect(markX, y, markWidth, markHeight, 'F');
-    }
+  // Köşelere siyah kare kutucuklar çizer
+  function drawCornerSquares(doc, x, y, w, h, size) {
+    if (!size) size = 2.5;
+    doc.setFillColor(0, 0, 0);
+    // Sol üst
+    doc.rect(x - size, y - size, size, size, 'F');
+    // Sağ üst
+    doc.rect(x + w, y - size, size, size, 'F');
+    // Sol alt
+    doc.rect(x - size, y + h, size, size, 'F');
+    // Sağ alt
+    doc.rect(x + w, y + h, size, size, 'F');
   }
 
   function drawOpticalForm(doc, student, room, type) {
     var pageWidth = 210;
     var pageHeight = 297;
-    // Form içeriği sola çok yakın olduğu için yatay ayar çizgileriyle çakışıyor, 
-    // margin artırılarak form hafifçe sağa kaydırıldı (8 -> 12).
-    var margin = 12;
+    var margin = 10;
 
     // Pink/Magenta theme color matching reference
     var pinkR = 220, pinkG = 50, pinkB = 120;
-
-    // Draw alignment/timing marks on the left edge
-    drawAlignmentMarks(doc, pageHeight);
 
     if (type === 'lgs') {
       drawLGSOpticalForm(doc, student, room, pageWidth, pageHeight, margin, pinkR, pinkG, pinkB);
@@ -1968,6 +1964,8 @@
     doc.setDrawColor(pR, pG, pB);
     doc.setLineWidth(0.3);
     doc.rect(optionsX, kitapcikY, optionsW, row1H);
+    // Köşe kare kutucukları
+    drawCornerSquares(doc, optionsX, kitapcikY, optionsW, row1H, 2.5);
 
     var ktBubs = ['A', 'B', 'C', 'D'];
     var bubGap = optionsW / (ktBubs.length + 1);
@@ -2050,10 +2048,8 @@
     var setFont = function (style) {
       if (window.fontRobotoRegular) doc.setFont('Roboto', style);
     };
-    // Sola eklediğimiz ayar çizgilerine(timing marks) çarpmaması için 
-    // sol margin değerini 14 yapıyoruz. Sağ tarafı ise sağa kaydırmak için daraltıyoruz.
-    var leftMargin = 14;
-    var rightMargin = 6;
+    var leftMargin = 10;
+    var rightMargin = 10;
     var pageWidth = 210;
 
     // İçerik genişliğini asimetrik marginlere göre hesaplıyoruz
@@ -2129,6 +2125,8 @@
       doc.setDrawColor(pR, pG, pB);
       doc.setLineWidth(0.3);
       doc.rect(cx, borderY, sColW, colGridH);
+      // Köşe kare kutucukları
+      drawCornerSquares(doc, cx, borderY, sColW, colGridH, 2.5);
     }
 
     // SAYISAL Columns
@@ -2157,6 +2155,8 @@
       doc.setDrawColor(pR, pG, pB);
       doc.setLineWidth(0.3);
       doc.rect(cx, borderY, mColW, colGridH);
+      // Köşe kare kutucukları
+      drawCornerSquares(doc, cx, borderY, mColW, colGridH, 2.5);
     }
 
   }
@@ -2212,7 +2212,7 @@
 
   // TYT/AYT form matching "LİSE GRUBU CEVAP KAĞIDI" reference
   function drawTYTOpticalForm(doc, student, room, pageWidth, pageHeight, margin) {
-    var pR = 220, pG = 50, pB = 120;
+    var pR = 230, pG = 140, pB = 30;
     var setFont = function (style) {
       if (window.fontRobotoRegular) doc.setFont('Roboto', style);
     };
@@ -2377,11 +2377,12 @@
     setFont('bold');
     doc.text('KİTAPÇIK TÜRÜ', ktStartX + titleW / 2, ktStartY + 5.3, { align: 'center' });
 
-    // Middle part: White box with pink border for bubbles
     var optionsX = ktStartX + titleW + boxGap;
     doc.setDrawColor(pR, pG, pB);
     doc.setLineWidth(0.3);
     doc.rect(optionsX, ktStartY, optionsW, row1H);
+    // Köşe kare kutucukları
+    drawCornerSquares(doc, optionsX, ktStartY, optionsW, row1H, 2.5);
 
     // Bubbles (A B C D) in pink
     var ktBubs = ['A', 'B', 'C', 'D'];
@@ -2501,7 +2502,7 @@
 
         // Zebra striping for even rows to improve readability
         if (q % 2 === 0) {
-          doc.setFillColor(250, 230, 240); // Very light pink
+          doc.setFillColor(255, 240, 220); // Very light orange
           // doc.rect(x, y, w, h, style)
           doc.rect(cx, qy - rGap / 2, ansColW, rGap, 'F');
         }
@@ -2531,6 +2532,8 @@
       doc.setLineWidth(0.3); // Standardized thickness
       var gridH = 40 * rGap + 2.0; // Accounts for the 1.0 top padding and adds 1.0 bottom padding
       doc.rect(cx, borderY, ansColW, gridH);
+      // Köşe kare kutucukları
+      drawCornerSquares(doc, cx, borderY, ansColW, gridH, 2.5);
     }
   }
 
