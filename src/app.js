@@ -1857,7 +1857,7 @@
     });
 
     // ============ DİKKAT SECTION ============
-    var dikkatY = boxY + boxH + 2;
+    var dikkatY = boxY + boxH + 8;
     var dikkatH = 9;
     var gapBetweenBoxes = 2;
 
@@ -1871,54 +1871,11 @@
     doc.text('DİKKAT', infoX + dikkatW / 2, dikkatY + (dikkatH / 2) + 1, { align: 'center' });
     doc.setTextColor(0);
 
-    // 2. Yanlış kodlama Box
-    var yanlisX = infoX + dikkatW + gapBetweenBoxes;
-    var yanlisW = 38;
-    doc.setDrawColor(pR, pG, pB);
-    doc.setLineWidth(0.3);
-    doc.rect(yanlisX, dikkatY, yanlisW, dikkatH);
-
-    doc.setTextColor(pR, pG, pB);
-    doc.setFontSize(5.5);
-    setFont('bold');
-    doc.text('Yanlış kodlama', yanlisX + yanlisW / 2, dikkatY + 3, { align: 'center' });
-    doc.setTextColor(0);
-
-    var startCircX = yanlisX + 3.5;
-    var circY = dikkatY + 6;
-    var gap = 5.5;
-
-    doc.setDrawColor(0);
-    doc.setFillColor(0);
-    doc.setTextColor(0);
-
-    // 1. Dot in center
-    doc.setLineWidth(0.3);
-    doc.circle(startCircX, circY, 1.8, 'S');
-    doc.circle(startCircX, circY, 0.5, 'F');
-
-    // 2. Vertical Oval / Bean (Simulated)
-    doc.ellipse(startCircX + gap, circY, 1.0, 1.8, 'F');
-
-    // 3. Tick
-    doc.circle(startCircX + gap * 2, circY, 1.8, 'S');
-    doc.setFontSize(5);
-    doc.text('✔', startCircX + gap * 2 - 1, circY + 1.2);
-
-    // 4. Cross
-    doc.circle(startCircX + gap * 3, circY, 1.8, 'S');
-    doc.text('X', startCircX + gap * 3 - 1, circY + 1.2);
-
-    // 5. Scribble
-    doc.circle(startCircX + gap * 4, circY, 1.8, 'S');
-    doc.line(startCircX + gap * 4 - 1, circY, startCircX + gap * 4 + 1, circY);
-
-    // 6. Dash
-    doc.circle(startCircX + gap * 5, circY, 1.8, 'S');
-    doc.text('-', startCircX + gap * 5 - 0.5, circY + 1);
+    // 2. Yanlış kodlama Box REMOVED AS REQUESTED
+    var circY = dikkatY + 6; // Bubble vertical center
 
     // 3. Doğru kodlama Box
-    var dogruX = yanlisX + yanlisW;
+    var dogruX = infoX + dikkatW + gapBetweenBoxes;
     var dogruW = 22;
     doc.setDrawColor(pR, pG, pB);
     doc.setLineWidth(0.3);
@@ -1933,67 +1890,46 @@
     doc.setFillColor(0);
     doc.circle(dogruX + dogruW / 2, circY, 1.8, 'F');
 
-    // 4. Text on Right
-    var textX = dogruX + dogruW + 2;
-    var remainingW = (infoX + infoWidth) - textX;
-    doc.setTextColor(0);
-    doc.setFontSize(5.5);
-    setFont('bold');
-
-    doc.text('Kodlamalarınızı lütfen yumuşak', textX + remainingW / 2, dikkatY + 3, { align: 'center' });
-    doc.text('kurşun kalem ile yapınız.', textX + remainingW / 2, dikkatY + 6, { align: 'center' });
-
-
-    // ============ KİTAPÇIK TÜRÜ ============
-    var kitapcikY = dikkatY + dikkatH + 4; // Start below DİKKAT
-    var row1H = 8;
+    // 4. KİTAPÇIK TÜRÜ — same row as DİKKAT (like TYT/AYT form)
+    var row1H = dikkatH; // same height as DİKKAT row
     var titleW = 24;
     var boxGap = 4;
     var optionsW = 28;
-    var gap2 = 14;
-    var textX2 = infoX + titleW + boxGap + optionsW + gap2 - 32; // Exact shifted left
+    var ktStartX = dogruX + dogruW + 8; // gap after Doğru kodlama
+    var ktStartY = dikkatY + 0.5;       // vertically aligned with DİKKAT
 
     doc.setFillColor(pR, pG, pB);
-    doc.rect(infoX, kitapcikY, titleW, row1H, 'F');
+    doc.rect(ktStartX, ktStartY, titleW, row1H - 1, 'F');
     doc.setTextColor(255);
     doc.setFontSize(7);
     setFont('bold');
-    doc.text('KİTAPÇIK TÜRÜ', infoX + titleW / 2, kitapcikY + 5.3, { align: 'center' });
+    doc.text('KİTAPÇIK TÜRÜ', ktStartX + titleW / 2, ktStartY + 5.3, { align: 'center' });
 
-    var optionsX = infoX + titleW + boxGap;
+    var optionsX = ktStartX + titleW + boxGap;
     doc.setDrawColor(pR, pG, pB);
     doc.setLineWidth(0.3);
-    doc.rect(optionsX, kitapcikY, optionsW, row1H);
-    // Köşe kare kutucukları
-    drawCornerSquares(doc, optionsX, kitapcikY, optionsW, row1H, 2.5);
+    doc.rect(optionsX, ktStartY, optionsW, row1H - 1);
+    drawCornerSquares(doc, optionsX, ktStartY, optionsW, row1H - 1, 2.5);
 
     var ktBubs = ['A', 'B', 'C', 'D'];
     var bubGap = optionsW / (ktBubs.length + 1);
-
     for (var k = 0; k < ktBubs.length; k++) {
       var bx = optionsX + bubGap * (k + 1);
       doc.setDrawColor(pR, pG, pB);
       doc.setLineWidth(0.3);
-      doc.circle(bx, kitapcikY + 4, 2, 'S');
+      doc.circle(bx, ktStartY + 4, 2, 'S');
       doc.setTextColor(pR, pG, pB);
       doc.setFontSize(5.5);
       setFont('bold');
-      doc.text(ktBubs[k], bx, kitapcikY + 4.65, { align: 'center' });
+      doc.text(ktBubs[k], bx, ktStartY + 4.65, { align: 'center' });
     }
-
-    var textRemainingW = (pageWidth - margin) - textX2;
-    doc.setFontSize(6);
-    setFont('bold');
-    doc.setTextColor(0);
-    doc.text('Kitapçık Türünü', textX2 + textRemainingW / 2, kitapcikY + 3, { align: 'center' });
-    doc.text('Kodlamayı Unutmayınız.', textX2 + textRemainingW / 2, kitapcikY + 6, { align: 'center' });
 
     // Reset colors
     doc.setTextColor(0);
     doc.setDrawColor(0);
 
     // ============ BOTTOM BLOCK (SÖZEL / SAYISAL) ============
-    var bottomY = kitapcikY + row1H + 14;
+    var bottomY = dikkatY + dikkatH + 14;
     drawLGSLayout(doc, bottomY, pR, pG, pB);
 
     // ============ FOOTER ============
@@ -2058,10 +1994,20 @@
     // Split: SÖZEL (Left 4 cols) | SAYISAL (Right 2 cols)
     var colW = contentWidth / 6.2;
     var sozelW = colW * 4;
-    var sayisalW = colW * 2;
-    var gap = contentWidth - sozelW - sayisalW;
+    var sColGap = 5.5; // Sütunlar arası boşluk (daha da artırıldı)
+    var mColGap = 5.5; // Sütunlar arası boşluk (daha da artırıldı)
 
-    var sayisalX = leftMargin + sozelW + gap;
+    // Calculate Verbal column width
+    var sozelColsCount = 4;
+    var sColW = (sozelW - (sozelColsCount - 1) * sColGap) / sozelColsCount;
+
+    // Force Numerical columns to use EXACTLY the same width as Verbal columns
+    var mColW = sColW;
+    var newSayisalW = 2 * mColW + 1 * mColGap;
+
+    // Recalculate gap and X position to accommodate specific column widths
+    var interSectionGap = contentWidth - sozelW - newSayisalW;
+    var sayisalX = leftMargin + sozelW + interSectionGap;
 
     // Headers
     var headerH = 7;
@@ -2073,13 +2019,13 @@
     setFont('bold');
     doc.text('SÖZEL BÖLÜM', leftMargin + sozelW / 2, startY + 5, { align: 'center' });
 
-    // SAYISAL Header
+    // SAYISAL Header - Use newSayisalW
     doc.setFillColor(pR, pG, pB);
-    doc.rect(sayisalX, startY, sayisalW, headerH, 'F');
+    doc.rect(sayisalX, startY, newSayisalW, headerH, 'F');
     doc.setTextColor(255);
     doc.setFontSize(10);
     setFont('bold');
-    doc.text('SAYISAL BÖLÜM', sayisalX + sayisalW / 2, startY + 5, { align: 'center' });
+    doc.text('SAYISAL BÖLÜM', sayisalX + newSayisalW / 2, startY + 5, { align: 'center' });
     doc.setTextColor(0);
 
     // Columns
@@ -2097,7 +2043,7 @@
       { title: 'DİN KÜLTÜRÜ\nVE\nAHLAK BİLGİSİ', q: 10 },
       { title: 'İNGİLİZCE', q: 10 }
     ];
-    var sColGap = 2.5; // Sütunlar arası boşluk
+    var sColGap = 5.5; // Sütunlar arası boşluk (daha da artırıldı)
     var sColW = (sozelW - 3 * sColGap) / 4;
 
     for (var i = 0; i < 4; i++) {
@@ -2134,8 +2080,7 @@
       { title: 'MATEMATİK', q: 20 },
       { title: 'FEN BİLİMLERİ', q: 20 }
     ];
-    var mColGap = 2.5; // Sütunlar arası boşluk
-    var mColW = (sayisalW - 1 * mColGap) / 2;
+    // SAYISAL Columns (mColGap and mColW are already defined above)
 
     for (var j = 0; j < 2; j++) {
       var cx = sayisalX + j * (mColW + mColGap);
@@ -2170,7 +2115,7 @@
     var opts = ['A', 'B', 'C', 'D'];
 
     // Add some padding inside the column border
-    var colLeftPadding = 2.5; // Space between left border and numbers
+    var colLeftPadding = 1.2; // Reduced from 2.5
 
     var leftSpace = 6.5; // Reduced from 8.0: Space between numbers and first bubble
     var rightPadding = 3.8; // Increased from 3.0: Space between last bubble and right border

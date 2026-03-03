@@ -38,33 +38,33 @@ HTML_TEMPLATE=$(cat "$SRC_DIR/template.html")
 # Encode logo as base64
 LOGO_B64=""
 if [ -f "$SRC_DIR/logo.png" ]; then
-  LOGO_B64="data:image/png;base64,$(base64 -w 0 "$SRC_DIR/logo.png")"
+  LOGO_B64="data:image/png;base64,$(base64 -i "$SRC_DIR/logo.png" -b 0)"
   echo "📸 Logo embedded as base64"
 fi
 
 # Encode sample Excel files as base64
 SAMPLE_STUDENTS_B64=""
 if [ -f "$SCRIPT_DIR/public/sample_students.xlsx" ]; then
-  SAMPLE_STUDENTS_B64="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,$(base64 -w 0 "$SCRIPT_DIR/public/sample_students.xlsx")"
+  SAMPLE_STUDENTS_B64="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,$(base64 -i "$SCRIPT_DIR/public/sample_students.xlsx" -b 0)"
   echo "📄 Sample students Excel embedded"
 fi
 
 SAMPLE_ROOMS_B64=""
 if [ -f "$SCRIPT_DIR/public/sample_rooms.xlsx" ]; then
-  SAMPLE_ROOMS_B64="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,$(base64 -w 0 "$SCRIPT_DIR/public/sample_rooms.xlsx")"
+  SAMPLE_ROOMS_B64="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,$(base64 -i "$SCRIPT_DIR/public/sample_rooms.xlsx" -b 0)"
   echo "📄 Sample rooms Excel embedded"
 fi
 
 # Encode Fonts
 FONT_REGULAR_B64=""
 if [ -f "$LIBS_DIR/Roboto-Regular.ttf" ]; then
-  FONT_REGULAR_B64="$(base64 -w 0 "$LIBS_DIR/Roboto-Regular.ttf")"
+  FONT_REGULAR_B64="$(base64 -i "$LIBS_DIR/Roboto-Regular.ttf" -b 0)"
   echo "🔤 Roboto-Regular font embedded"
 fi
 
 FONT_BOLD_B64=""
 if [ -f "$LIBS_DIR/Roboto-Bold.ttf" ]; then
-  FONT_BOLD_B64="$(base64 -w 0 "$LIBS_DIR/Roboto-Bold.ttf")"
+  FONT_BOLD_B64="$(base64 -i "$LIBS_DIR/Roboto-Bold.ttf" -b 0)"
   echo "🔤 Roboto-Bold font embedded"
 fi
 
